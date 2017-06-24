@@ -6,6 +6,9 @@ require 'ostruct'
 require 'pry'
 require 'twitter'
 require 'open-uri'
+require 'logger'
+
+logger = Logger.new(STDERR)
 
 twitter_client = Twitter::REST::Client.new do |config|
   config.consumer_key = ENV['TWITTER_CONSUMER_KEY']
@@ -22,7 +25,7 @@ CSV.foreach("./result.tsv", col_sep: "\t", headers: true) do |row|
   begin
     ota_tw = twitter_client.user(ota.tw_id)
   rescue Twitter::Error::NotFound => e
-    STDERR.puts "#{e}: #{ota.tw_id}"
+    logger.warn "#{e}: #{ota.tw_id}"
     next
   end
   ota.name = ota_tw.name
