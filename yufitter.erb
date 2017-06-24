@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://sheephead.jp/yufitter/index2.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link href="./yufitter_files/style.css" media="screen" rel="stylesheet" type="text/css">
+<title>yufitter</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="./yufitter_files/animsition.css">
+<script type="text/javascript" src="./yufitter_files/jquery.min.js"></script>
+<script type="text/javascript" src="./yufitter_files/animsition.js"></script>
+<script type="text/javascript" src="./yufitter_files/link.js"></script>
+
+<script type="text/javascript">
+$(function(){
+    var setArea = $('#loadarea'),
+    loadNum = 5, // 読み込む個数
+    loadTxt = 'Now Loading...', // Loading中の表示テキスト
+    fadeSpeed = 100; // フェードスピード
+
+    $(window).load(function(){
+        var loadWinHeight = $(window).height(),loadDocHeight = $(document).height();
+        if(loadWinHeight >= loadDocHeight){
+            scrollLoad();
+        }
+    }).scroll(function(){
+        scrollLoad();
+    });
+
+    function scrollLoad(){
+        var winHeight = window.innerHeight ? window.innerHeight : $(window).height(),
+        posBottom = $(document).height() - winHeight;
+        if($(this).scrollTop() == posBottom) {
+            var adjScrTop = $(document).scrollTop();
+            $('html,body').animate({scrollTop:(adjScrTop)-1},0);
+            $.ajax({
+                url: 'js/include2.json',
+                dataType: 'json',
+                success : function(data){
+                    var dataLengh = data.length,
+                    loadItemLength = setArea.find('.loadItem').length,
+                    setAdj = (dataLengh)-(loadItemLength),
+                    setBeg = (dataLengh)-(setAdj);
+                    if(!(dataLengh == loadItemLength)){
+                        setArea.append('<div id="nowLoading">' + loadTxt + '</div>');
+                        if(loadItemLength == 0){
+                            for (var i=0; i<loadNum; i++) {
+                                $('<div id="item' + data[i].itemNum + '" class="loadItem">' + data[i].itemSource + '</div>').appendTo(setArea).css({opacity:'0'}).animate({opacity:'1'},fadeSpeed);
+                            }
+                        } else if(loadItemLength > 0 && loadItemLength < dataLengh){
+                            if(loadNum < setAdj){
+                                for (var i=0; i<loadNum; i++) {
+                                    v = i+setBeg;
+                                    $('<div id="item' + data[v].itemNum + '" class="loadItem">' + data[v].itemSource + '</div>').appendTo(setArea).css({opacity:'0'}).animate({opacity:'1'},fadeSpeed);
+                                }
+                            } else if(loadNum >= setAdj){
+                                for (var i=0; i<setAdj; i++) {
+                                    v = i+setBeg;
+                                    $('<div id="item' + data[v].itemNum + '" class="loadItem">' + data[v].itemSource + '</div>').appendTo(setArea).css({opacity:'0'}).animate({opacity:'1'},fadeSpeed);
+                                }
+                            }
+                        } else if(loadItemLength == dataLengh){
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                },
+                complete : function(){
+                    $('#nowLoading').each(function(){
+                        $(this).remove();
+                    });
+                    return false;
+                }
+            });
+            return false;
+        }
+    }
+});
+</script>
+
+
+</head>
+<body class="animsition" style="animation-duration: 1500ms; opacity: 1;">
+
+
+<div id="header"></div>
+
+
+<div id="prof" class="ratio">
+	<ul class="wrapicon">
+    <li class="icon"><img src="./yufitter_files/yufu.jpg"></li>
+    <li><a href="http://sheephead.jp/yufitter/otalist.html"><div class="userlist">ヲタクリスト</div></a></li><a href="http://sheephead.jp/yufitter/otalist.html">
+    </a></ul><a href="http://sheephead.jp/yufitter/otalist.html">
+
+    <h1>僕らのゆっふぃー誕生日おめでとう</h1>
+    </a><div class="accounts"><a href="http://sheephead.jp/yufitter/otalist.html"></a><a href="https://twitter.com/yufu_0708" target="_blank">@yufu_0708</a></div>
+    <p>ゆっふぃー15歳のお誕生日おめでとう！！　ゆっふぃーに世界中からお祝いのメッセージが届いてるからみてね！！　気になる人のアカウントタップしたらツイッタ見れるお。気合い入れてイラスト書いてる人もいるし動画をようつべにうぷってるひともいるよ☆楽しんでくれるとうれしいです！</p>
+
+    <div class="birth">誕生日　7月8日</div>
+
+    <ul class="follower">
+    <li><span>346</span>ハピバ</li>
+    <li><span>200,000,000</span>スキー</li>
+    </ul>
+</div><!-- /prof -->
+
+
+<div id="loadarea">
+
+<% otakus.each_with_index do |ota, index| %>
+<div id="item<%= index %>" class="loadItem" style="opacity: 1;">
+<div class="wrapotaku">
+<ul>
+<li>
+<a href="<%= ota.profile_image %>">
+<img src="<%= ota.profile_image %>">
+</a>
+</li>
+<li>
+<div class="name"><%= ota.name %>
+</div>
+<div class="accounts">
+<a href="https://twitter.com/<%= ota.tw_id %>" target="_blank"><%= ota.name %>
+</a>
+</div>
+<div class="message"><%= ota.message %></div>
+<div class="otaimages">
+<a href="<%= ota.url %>">
+<img src="<%= ota.url %>">
+</a>
+<iframe src="" frameborder="0" allowfullscreen="">
+</iframe>
+</div>
+</li>
+</ul>
+</div>
+<!-- /wrapotaku -->
+</div>
+<% end %>
+<!-- /wrapotaku -->
+</div>
+</div>
+<!--/#loadarea-->
+
+
+
+
+</body></html>
