@@ -8,8 +8,8 @@
 ```
 TWITTER_CONSUMER_KEY=xxxxxxxxxxxxxxxxxx
 TWITTER_CONSUMER_SECRET=xxxxxxxxxxxxxxxxxx
-TWITTER_OAUTH_TOKEN=xxxxxxxxxxxxxxxxxx
-TWITTER_OAUTH_TOKEN_SECRET=xxxxxxxxxxxxxxxxxx
+TWITTER_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxx
+TWITTER_ACCESS_TOKEN_SECRET=xxxxxxxxxxxxxxxxxx
 ```
 
 ## Run

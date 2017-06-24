@@ -6,14 +6,14 @@ require 'ostruct'
 require 'pry'
 require 'twitter'
 require 'open-uri'
-Twitter.configure do |cnf|
-    cnf.consumer_key    = ENV['TWITTER_CONSUMER_KEY']
-    cnf.consumer_secret = ENV['TWITTER_CONSUMER_SECRET']
-end
-@twitter = Twitter::Client.new(
-                               :oauth_token => ENV['TWITTER_OAUTH_TOKEN'],
-                               :oauth_token_secret => ENV['TWITTER_OAUTH_TOKEN_SECRET']
-                               )
+#Twitter.configure do |cnf|
+#end
+@twitter = Twitter::REST::Client.new do |config|
+                               config.consumer_key = ENV['TWITTER_CONSUMER_KEY']
+                               config.consumer_secret =  ENV['TWITTER_CONSUMER_SECRET']
+                               config.access_token =  ENV['TWITTER_ACCESS_TOKEN']
+                               config.access_token_secret = ENV['TWITTER_ACCESS_TOKEN_SECRET']
+                               end
 
 otakus = []
 
