@@ -6,14 +6,13 @@ require 'ostruct'
 require 'pry'
 require 'twitter'
 require 'open-uri'
-#Twitter.configure do |cnf|
-#end
-@twitter = Twitter::REST::Client.new do |config|
-                               config.consumer_key = ENV['TWITTER_CONSUMER_KEY']
-                               config.consumer_secret =  ENV['TWITTER_CONSUMER_SECRET']
-                               config.access_token =  ENV['TWITTER_ACCESS_TOKEN']
-                               config.access_token_secret = ENV['TWITTER_ACCESS_TOKEN_SECRET']
-                               end
+
+twitter_client = Twitter::REST::Client.new do |config|
+  config.consumer_key = ENV['TWITTER_CONSUMER_KEY']
+  config.consumer_secret = ENV['TWITTER_CONSUMER_SECRET']
+  config.access_token = ENV['TWITTER_ACCESS_TOKEN']
+  config.access_token_secret = ENV['TWITTER_ACCESS_TOKEN_SECRET']
+end
 
 otakus = []
 
@@ -21,7 +20,7 @@ CSV.foreach("./result.tsv", col_sep: "\t", headers: true) do |row|
   ota = OpenStruct.new
   ota.tw_id = row[1]
   begin
-    ota_tw = @twitter.user(ota.tw_id)
+    ota_tw = twitter_client.user(ota.tw_id)
   rescue Twitter::Error::NotFound => e
     STDERR.puts "#{e}: #{ota.tw_id}"
     next
@@ -31,6 +30,7 @@ CSV.foreach("./result.tsv", col_sep: "\t", headers: true) do |row|
   ota.message = row[2]
   ota.url = row[3]
   otakus << ota
+
   sleep 1
 end
 
