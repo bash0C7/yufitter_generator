@@ -50,4 +50,6 @@ build-iPhoneSimulator/
 .rvmrc
 
 #############
+/.idea/
 result.tsv
+/yufitter/
