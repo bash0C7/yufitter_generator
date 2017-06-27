@@ -7,6 +7,12 @@ require 'pry'
 require 'twitter'
 require 'open-uri'
 require 'logger'
+require 'cgi'
+
+def h str
+  CGI.escapeHTML(str)
+end
+
 
 logger = Logger.new(STDERR)
 
