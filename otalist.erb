@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<link href="css/style.css" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<title>yufitter</title>
+<meta name="robots" content="noindex,nofollow">
+
+</head>
+<body>
+
+
+
+<div class="wrap_otalist">
+
+<h1>参加ヲタクリスト</h1>
+<p class="lead">一覧で載せてるので名前タップするとその方のページに飛びます。</p>
+
+<% otakus.each_with_index do |ota, index| %>
+
+<% next if ota.yuru_chara %>
+
+<a href="1.html?<%=h index %>"><%=h ota.name %></a>
+
+<% end %>
+
+
+      </div>
+<div class="back"><a href="./index2.html">←TOPページに戻る</a></div>
+</body>
+</html>
