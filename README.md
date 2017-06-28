@@ -3,6 +3,7 @@
 ## Setup
 
 - save result.tsv to project root
+ - 事前に改行を|に変換
 - create .env
 
 ```

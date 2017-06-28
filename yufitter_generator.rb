@@ -7,11 +7,9 @@ require 'pry'
 require 'twitter'
 require 'open-uri'
 require 'logger'
-require 'cgi'
+#require 'file'
+include ERB::Util
 
-def h str
-  CGI.escapeHTML(str)
-end
 
 
 logger = Logger.new(STDERR)
@@ -30,14 +28,28 @@ CSV.foreach("./result.tsv", col_sep: "\t", headers: true) do |row|
   ota.tw_id = row[1]
   begin
     ota_tw = twitter_client.user(ota.tw_id)
+    logger.info ota.tw_id
   rescue Twitter::Error::NotFound => e
     logger.warn "#{e}: #{ota.tw_id}"
     next
   end
   ota.name = ota_tw.name
-  ota.profile_image = ota_tw.profile_image_url_https
+
+  url = ota_tw.profile_image_url_https.to_s.gsub('_normal.', '.')
+  profile_image = "images/twitter_#{ota.tw_id}_#{File.extname(url)}"
+  local_profile_image = "./yufitter/#{profile_image}"
+
+  open(local_profile_image, 'wb') do |output|
+    open(url) do |data|
+      output.write(data.read)
+    end
+  end
+
+  ota.profile_image = profile_image
   ota.message = row[2]
   ota.url = row[3]
+  ota.yuru_chara = (row[5] == "TRUE")
+
   otakus << ota
 
   sleep 1
