@@ -3,8 +3,8 @@ require 'dotenv/load'
 require 'erb'
 require 'ostruct'
 require 'pry'
-require 'open-uri'
 require 'logger'
+require 'json'
 include ERB::Util
 
 logger = Logger.new(STDERR)
@@ -21,6 +21,16 @@ File.open("./ads.txt").each do |line|
 end
 
 otakus = Marshal.load(STDIN.read)
+otakus.each do |ota|
+  local_profile_image = "./yufitter/images/twitter_#{ota.tw_id}_#{File.extname(ota.profile_image_url)}"
+
+  open(local_profile_image, 'wb') do |output|
+    output.write(ota.profile_image)
+  end
+
+  ota.profile_image = local_profile_image
+end
+
 ad_freq = (otakus.size / ads.size).floor
 
 ads.each_with_index do |ad, i|
@@ -29,13 +39,16 @@ ads.each_with_index do |ad, i|
   otakus.insert(index, ad) #均等に差し込む
 end
 
-# はめ込み
-ERB.new(File.open('./yufitter.erb').read).run
+open("./yufitter/js/include2.json", 'w') do |output|
+  json_text = ERB.new(File.open('./include2.json.erb').read).result
+  output.write(JSON.pretty_generate(JSON.parse(json_text)))
 
-puts "==============================================================="
+end
 
-ERB.new(File.open('./urukyara.erb').read).run
+open("./yufitter/urukyara.html", 'w') do |output|
+  output.write(ERB.new(File.open('./urukyara.html.erb').read).result)
+end
 
-puts "==============================================================="
-
-ERB.new(File.open('./otalist.erb').read).run
+open("./yufitter/otalist.html", 'w') do |output|
+  output.write(ERB.new(File.open('./otalist.html.erb').read).result)
+end

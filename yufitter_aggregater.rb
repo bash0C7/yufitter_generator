@@ -6,7 +6,7 @@ require 'pry'
 require 'twitter'
 require 'open-uri'
 require 'logger'
-
+require 'open-uri'
 
 logger = Logger.new(STDERR)
 
@@ -33,23 +33,18 @@ CSV.foreach("./result.tsv", col_sep: "\t", headers: true) do |row|
   ota.name = ota_tw.name
 
   url = ota_tw.profile_image_url_https.to_s.gsub('_normal.', '.')
-  profile_image = "images/twitter_#{ota.tw_id}_#{File.extname(url)}"
-  local_profile_image = "./yufitter/#{profile_image}"
-
-  open(local_profile_image, 'wb') do |output|
-    open(url) do |data|
-      output.write(data.read)
-    end
+  open(url) do |data|
+    ota.profile_image = data.read
   end
+  ota.profile_image_url = url
 
-  ota.profile_image = profile_image
   ota.message = row[2]
   ota.url = row[3]
   ota.yuru_chara = (row[5] == "TRUE")
 
   otakus << ota
 
-  sleep 1
+  sleep 0.5
 end
 
 puts Marshal.dump(otakus)

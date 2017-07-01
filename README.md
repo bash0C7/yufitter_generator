@@ -46,4 +46,11 @@ bundle exec ruby yufitter_aggregater.rb | bundle exec ruby yufitter_generator.rb
   - result.tsvをもとにTwitterからデータを取得する
 - yufitter_generator
   - テンプレートを展開
- 
+
+### Output
+
+Force overwrite
+
+- yufitter/js/include2.json
+- yufitter/urukyara.html
+- yufitter/otalist.html
