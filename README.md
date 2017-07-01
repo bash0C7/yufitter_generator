@@ -3,9 +3,9 @@
 ## Setup
 
 - save result.tsv to project root
- - 事前に改行を|に変換すること
+  - 事前に改行を|に変換すること
 - save ads.txt to project root
- - 1行ごとにHTMLのスニペット（信頼できるものと扱います）
+  - 1行ごとにHTMLのスニペット（信頼できるものと扱います）
 - create .env
 
 ```
@@ -43,7 +43,7 @@ bundle exec ruby yufitter_aggregater.rb | bundle exec ruby yufitter_generator.rb
 ```
 
 - yufitter_aggregater
- - result.tsvをもとにTwitterからデータを取得する
+  - result.tsvをもとにTwitterからデータを取得する
 - yufitter_generator
- - テンプレートを展開
+  - テンプレートを展開
  
