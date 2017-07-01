@@ -52,4 +52,5 @@ build-iPhoneSimulator/
 #############
 /.idea/
 result.tsv
+ads.txt
 /yufitter/

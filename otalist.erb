@@ -19,7 +19,7 @@
 <p class="lead">一覧で載せてるので名前タップするとその方のページに飛びます。</p>
 
 <% otakus.each_with_index do |ota, index| %>
-      <% next if ota.yuru_chara %><a href="1.html?<%=h index %>"><%=h ota.name %></a>
+      <% next if ota.ad %><% next if ota.yuru_chara %><a href="1.html?<%=h index %>"><%=h ota.name %></a>
 <% end %>
 
 </div>

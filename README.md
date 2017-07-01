@@ -4,6 +4,8 @@
 
 - save result.tsv to project root
  - 事前に改行を|に変換
+- save ads.txt to project root
+ - 広告の"itemSource"HTMLスニペットを1行1アイテムで保存
 - create .env
 
 ```
@@ -16,5 +18,11 @@ TWITTER_ACCESS_TOKEN_SECRET=xxxxxxxxxxxxxxxxxx
 ## Run
 
 ```sh
-bundle exec ruby yufitter_generator.rb
+bundle exec ruby yufitter_aggregater.rb | bundle exec ruby yufitter_generator.rb
 ```
+
+- yufitter_aggregater
+ - result.tsvをもとにTwitterからデータを取得する
+- yufitter_generator
+ - テンプレートを展開
+ 

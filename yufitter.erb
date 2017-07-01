@@ -1,8 +1,14 @@
 [
 <% otakus.each_with_index do |ota, index| %>
     {
-    "itemNum": "<%= index %>",
-    "itemSource": "<div class='<% if ota.yuru_chara %>wrapyuru0<%= index % 4 + 1 %><% else %>wrapotaku<% end %>'><ul><li><a href='https://twitter.com/<%=h ota.tw_id %>'><img src='<%=h ota.profile_image %>'></a></li><li><div class='name'><%=h ota.name %></div><div class='accounts'><a href='https://twitter.com/<%=h ota.tw_id %>' target='_blank'><%=h ota.tw_id %></a></div><div class='message'><%= h(ota.message).gsub('|', '<br/>') %></div><div class='otaimages'><% unless ota.url.nil?  %><a href='<%=h ota.url %>'><img src='<%=h ota.url %>'></a><% end %></div></li></ul></div><!-- /wrapotaku -->"
+    "itemNum": "<%=h index %>",
+    <% if ota.ad %>
+    "itemSource": "<%= ota.item_source %>",
+    <% else %>
+    "itemSource": "<div class='<% if ota.yuru_chara %>wrapyuru0<%= index % 4 + 1 %><% else %>wrapotaku<% end %>'><ul><li><a href='https://twitter.com/<%=h ota.tw_id %>'><img src='<%=h ota.profile_image %>'></a></li><li><div class='name'><%=h ota.name %></div><div class='accounts'><a href='https://twitter.com/<%=h ota.tw_id %>' target='_blank'><%=h ota.tw_id %></a></div><div class='message'><%= h(ota.message).gsub('|', '<br/>') %></div><div class='otaimages'><% unless ota.url.nil?  %><a href='<%=h ota.url %>'><img src='<%=h ota.url %>'></a><% end %></div></li></ul></div><!-- /wrapotaku -->",
+    <% end %>
+    "ad?": <%=h ota.ad %>,
+    "chara?": <%=h ota.yuru_chara %>
     }<% unless index == otakus.length - 1  %>,<% end %>
 <% end %>
 ]
