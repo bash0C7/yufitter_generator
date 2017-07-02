@@ -18,8 +18,12 @@
 <h1>参加ヲタクリスト</h1>
 <p class="lead">一覧で載せてるので名前タップするとその方のページに飛びます。</p>
 
-<% otakus.reject{|ota| ota.ad }.reject{|ota| ota.yuru_chara }.each_with_index do |ota, index| %>
-  <a href="1.html?<%=h index %>"><%=h ota.name %></a>
+<% otakus.each_with_index do |ota, index| %>
+  <% unless ota.yuru_chara %>
+    <% unless ota.ad %>
+      <a href="1.html?<%=h index %>"><%=h ota.name %></a>
+    <% end %>
+  <% end %>
 <% end %>
 
 </div>

@@ -17,8 +17,10 @@
 
 <h1>ご当地キャラさん一覧</h1>
 <p class="lead">一覧で載せてるので名前タップするとその方のページに飛びます。</p>
-<% otakus.reject{|ota| ota.ad }.select{|ota| ota.yuru_chara }.each_with_index do |ota, index| %>
+<% otakus.each_with_index do |ota, index| %>
+  <% if ota.yuru_chara %>
   <a href="1.html?<%=h index %>"><%=h ota.name %></a>
+  <% end %>
 <% end %>
 
 </div>

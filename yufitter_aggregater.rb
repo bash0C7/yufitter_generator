@@ -19,13 +19,13 @@ end
 
 otakus = []
 
-CSV.foreach("./result.tsv", col_sep: "\t", headers: true) do |row|
+CSV.foreach("./result.tsv", col_sep: "\t", headers: true, quote_char: "\0") do |row|
   ota = OpenStruct.new
   ota.ad = false
   ota.tw_id = row[1]
   begin
     ota_tw = twitter_client.user(ota.tw_id)
-    logger.info ota.tw_id
+    logger.debug ota.tw_id
   rescue Twitter::Error::NotFound => e
     logger.warn "#{e}: #{ota.tw_id}"
     next
@@ -33,18 +33,28 @@ CSV.foreach("./result.tsv", col_sep: "\t", headers: true) do |row|
   ota.name = ota_tw.name
 
   url = ota_tw.profile_image_url_https.to_s.gsub('_normal.', '.')
-  open(url) do |data|
-    ota.profile_image = data.read
+  begin
+    open(url) {|data| ota.profile_image = data.read}
+  rescue OpenURI::HTTPError => e
+    logger.info  "#{e}: #{url}"
+
+    url = ota_tw.profile_image_url_https
+    begin
+      open(url) {|data| ota.profile_image = data.read}
+    rescue OpenURI::HTTPError => e
+      logger.warn  "#{e}: #{url}"
+    end
   end
   ota.profile_image_url = url
 
   ota.message = row[2]
-  ota.url = row[3]
+  ota.contents_path = row[7]
+  ota.contents_path_extension = File.extname(ota.contents_path) unless ota.contents_path.nil?
   ota.yuru_chara = (row[5] == "TRUE")
 
   otakus << ota
 
-  sleep 0.5
+  sleep 0.4
 end
 
 puts Marshal.dump(otakus)
