@@ -20,32 +20,37 @@ end
 otakus = []
 
 CSV.foreach("./result.tsv", col_sep: "\t", headers: true, quote_char: "\0") do |row|
+  next if (row[9] == "TRUE")
+
   ota = OpenStruct.new
   ota.ad = false
   ota.tw_id = row[1]
+  ota.timestamp = row[0]
   begin
     ota_tw = twitter_client.user(ota.tw_id)
     logger.debug ota.tw_id
-  rescue Twitter::Error::NotFound => e
-    logger.warn "#{e}: #{ota.tw_id}"
-    next
-  end
-  ota.name = ota_tw.name
 
-  url = ota_tw.profile_image_url_https.to_s.gsub('_normal.', '.')
-  begin
-    open(url) {|data| ota.profile_image = data.read}
-  rescue OpenURI::HTTPError => e
-    logger.info  "#{e}: #{url}"
+    ota.name = ota_tw.name
 
-    url = ota_tw.profile_image_url_https
+    url = ota_tw.profile_image_url_https.to_s.gsub('_normal.', '.')
     begin
       open(url) {|data| ota.profile_image = data.read}
     rescue OpenURI::HTTPError => e
-      logger.warn  "#{e}: #{url}"
+      logger.info  "#{e}: #{url}"
+
+      url = ota_tw.profile_image_url_https
+      begin
+        open(url) {|data| ota.profile_image = data.read}
+      rescue OpenURI::HTTPError => e
+        logger.warn  "#{e}: #{url}"
+      end
     end
+    ota.profile_image_url = url
+  rescue Twitter::Error::NotFound => e
+    logger.warn "#{e}: #{ota.tw_id}"
+    ota.name = ota.tw_id
+    ota.profile_image_url = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
   end
-  ota.profile_image_url = url
 
   ota.message = row[2]
   ota.contents_path = row[7]
