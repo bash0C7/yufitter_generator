@@ -25,7 +25,7 @@ end
 
 otakus = Marshal.load(STDIN.read)
 otakus.each do |ota|
-  profile_image_path = "images/twitter_#{ota.tw_id}_#{File.extname(ota.profile_image_url)}"
+  profile_image_path = "images/twitter_#{ota.tw_id}#{File.extname(ota.profile_image_url)}"
 
   open("./yufitter/#{profile_image_path}", 'wb') do |output|
     output.write(ota.profile_image)
