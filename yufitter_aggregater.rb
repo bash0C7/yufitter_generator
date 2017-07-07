@@ -30,6 +30,7 @@ CSV.foreach("./result.tsv", col_sep: "\t", headers: true, quote_char: "\0") do |
   begin
     ota_tw = twitter_client.user(ota.tw_id)
     logger.debug ota.tw_id
+    ota.tw_exist = true
 
     ota.name = ota_tw.name
 
@@ -49,6 +50,7 @@ CSV.foreach("./result.tsv", col_sep: "\t", headers: true, quote_char: "\0") do |
   rescue Twitter::Error::NotFound => e
     logger.warn "#{e}: #{ota.tw_id}"
     ota.name = ota.tw_id
+    ota.tw_exist = false
     url = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
 
     begin
